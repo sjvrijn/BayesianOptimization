@@ -124,6 +124,11 @@ class BayesianOptimization(object):
             points = self.space._dict_to_points(points_dict)
             self.init_points = points
 
+    def explore_random(self, num_points, eager=False):
+        rand_points = self.space.random_points(num_points)
+        points_dict = self.space._points_to_dict(rand_points)
+        self.explore(points_dict, eager=eager)
+
     def initialize(self, points_dict):
         """
         Method to introduce points for which the target function value is known
