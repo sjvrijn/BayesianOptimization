@@ -108,6 +108,30 @@ class TargetSpace(object):
         points = list(map(list, zip(*all_points)))
         return points
 
+    def _points_to_dict(self, points):
+        """
+        Example:
+        -------
+        >>> pbounds = {'p1': (0, 1), 'p2': (1, 100)}
+        >>> space = TargetSpace(lambda p1, p2: p1 + p2, pbounds)
+        >>> points = [[0, 0], [1, 0.5], [2, 1]]
+        >>> space._points_to_dict(points)
+        {'p1': [0, .5, 1], 'p2': [0, 1, 2]}
+        """
+        # Consistency check
+        param_tup_lens = [len(point) for point in points]
+
+        if all([e == len(self.keys) for e in param_tup_lens]):
+            pass
+        else:
+            raise ValueError('The same number of parameters '
+                             'must be entered for every point.')
+
+        # Take transpose of list
+        points = list(map(list, zip(*points)))
+        points_dict = {name: x for name, x in zip(self.keys, points)}
+        return points_dict
+
     def observe_point(self, x):
         """
         Evaulates a single point x, to obtain the value y and then records them
