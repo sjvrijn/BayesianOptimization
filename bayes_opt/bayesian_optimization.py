@@ -58,11 +58,10 @@ class BayesianOptimization(object):
         self.plog = PrintLog(self.space.keys)
 
         # Output dictionary
-        self.res = {}
-        # Output dictionary
-        self.res['max'] = {'max_val': None,
-                           'max_params': None}
-        self.res['all'] = {'values': [], 'params': []}
+        self.res = {
+            'max': {'max_val': None, 'max_params': None},
+            'all': {'values': [], 'params': []},
+        }
 
         # non-public config for maximizing the aquisition function
         # (used to speedup tests, but generally leave these as is)
@@ -149,10 +148,8 @@ class BayesianOptimization(object):
         """
 
         self.y_init.extend(points_dict['target'])
-        for i in range(len(points_dict['target'])):
-            all_points = []
-            for key in self.space.keys:
-                all_points.append(points_dict[key][i])
+        for _ in points_dict['target']:
+            all_points = [points_dict[key][i] for key in self.space.keys]
             self.x_init.append(all_points)
 
     def initialize_df(self, points_df):
@@ -178,10 +175,7 @@ class BayesianOptimization(object):
         for i in points_df.index:
             self.y_init.append(points_df.loc[i, 'target'])
 
-            all_points = []
-            for key in self.space.keys:
-                all_points.append(points_df.loc[i, key])
-
+            all_points = [points_df.loc[i, key] for key in self.space.keys]
             self.x_init.append(all_points)
 
     def set_bounds(self, new_bounds):
@@ -267,12 +261,12 @@ class BayesianOptimization(object):
         if self.verbose:
             self.plog.print_header(initialization=False)
         # Iterative process of searching for the maximum. At each round the
-        # most recent x and y values probed are added to the X and Y arrays
-        # used to train the Gaussian Process. Next the maximum known value
-        # of the target function is found and passed to the acq_max function.
-        # The arg_max of the acquisition function is found and this will be
-        # the next probed value of the target function in the next round.
-        for i in range(n_iter):
+            # most recent x and y values probed are added to the X and Y arrays
+            # used to train the Gaussian Process. Next the maximum known value
+            # of the target function is found and passed to the acq_max function.
+            # The arg_max of the acquisition function is found and this will be
+            # the next probed value of the target function in the next round.
+        for _ in range(n_iter):
             # Test if x_max is repeated, if it is, draw another one at random
             # If it is repeated, print a warning
             pwarning = False

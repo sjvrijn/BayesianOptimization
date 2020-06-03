@@ -47,9 +47,7 @@ def prepare_data():
     y = train['loss']
 
     X = train.drop(['loss', 'id'], 1)
-    xgtrain = xgb.DMatrix(X, label=y)
-
-    return xgtrain
+    return xgb.DMatrix(X, label=y)
 
 
 if __name__ == '__main__':

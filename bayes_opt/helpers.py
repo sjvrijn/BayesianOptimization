@@ -200,8 +200,12 @@ class PrintLog(object):
             print("{}Bayesian Optimization{}".format(BColours.RED,
                                                      BColours.ENDC))
 
-        print(BColours.BLUE + "-" * (29 + sum([s + 5 for s in self.sizes])) +
-            BColours.ENDC)
+        print(
+            BColours.BLUE
+            + "-" * (29 + sum(s + 5 for s in self.sizes))
+            + BColours.ENDC
+        )
+
 
         print("{0:>{1}}".format("Step", 5), end=" | ")
         print("{0:>{1}}".format("Time", 6), end=" | ")

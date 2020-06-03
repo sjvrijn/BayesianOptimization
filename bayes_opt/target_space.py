@@ -121,16 +121,13 @@ class TargetSpace(object):
         # Consistency check
         param_tup_lens = [len(point) for point in points]
 
-        if all([e == len(self.keys) for e in param_tup_lens]):
-            pass
-        else:
+        if any(e != len(self.keys) for e in param_tup_lens):
             raise ValueError('The same number of parameters '
                              'must be entered for every point.')
 
         # Take transpose of list
         points = list(map(list, zip(*points)))
-        points_dict = {name: x for name, x in zip(self.keys, points)}
-        return points_dict
+        return {name: x for name, x in zip(self.keys, points)}
 
     def observe_point(self, x):
         """
